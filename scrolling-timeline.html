@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" src="http://mbostock.github.io/d3/talk/20111018/d3/d3.js"></script>
+    <script type="text/javascript" src="http://mbostock.github.io/d3/talk/20111018/d3/d3.csv.js"></script>
+    <script type="text/javascript" src="http://mbostock.github.io/d3/talk/20111018/d3/d3.time.js"></script>
+    <style type="text/css">
+
+   svg {
+      font-size: 10px;
+    }
+
+    g {
+      overflow: visible;
+    }
+
+    text {
+      z-index: 20;
+    }
+/* 
+    .axis {
+      shape-rendering: crispEdges;
+    }
+
+    .axis path, .axis line {
+      fill: none;
+      stroke-width: .5px;
+    }
+
+    .x.axis path {
+      stroke: #000;
+    }
+
+    .x.axis line {
+      stroke: black;
+      stroke-opacity: .5;
+    }
+
+    path.line {
+      fill: none;
+      stroke: #000;
+      stroke-width: .5px;
+    }*/
+
+    rect.pane {
+      cursor: move;
+      fill: none;
+      pointer-events: all;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="container">
+This couldn't be simpler.
+    </div>
+    <script type="text/javascript">
+
+    var w = 1200,
+    h = 500,
+    x = d3.time.scale().range([0, w]),  
+    xAxis = d3.svg.axis().scale(x).orient("bottom").tickSize(-h, 0).tickPadding(6); 
+
+    var svg = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h+50)
+    .append("svg:g");
+
+    svg.append("svg:g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + h + ")");
+
+    svg.append("svg:rect")
+    .attr("class", "pane")
+    .attr("width", w)
+    .attr("height", h)
+    .call(d3.behavior.zoom().on("zoom", zoom));
+
+    x.domain([new Date(1999, 0, 1), new Date(2003, 0, 0)]);
+
+    draw();
+
+    function draw() {
+      console.log ("drawing");
+      svg.select("g.x.axis").call(xAxis);
+    }
+
+    function zoom() {
+      console.log("zooming");
+      d3.event.transform(x); // TODO d3.behavior.zoom should support extents
+      draw();
+    }
+
+
+
+    </script>
+  </body>
+</html>
